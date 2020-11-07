@@ -18,71 +18,53 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
-public class EventInfoActivity extends AppCompatActivity {
-    DatePickerDialog pickerData;
-    TimePickerDialog pickerHour;
-    EditText eTextData, eTextHour;
-    ImageView imageView;
-    Button button;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class EventInfoActivity extends AppCompatActivity implements View.OnClickListener {
+    private DatePickerDialog pickerData;
+    private TimePickerDialog pickerHour;
+    private EditText eTextData, eTextHour;
+    private ImageView imageView;
+    private Button button;
     private static final int PICK_IMAGE = 100;
-    Uri imageUri;
+    private Uri imageUri;
+    private Button saveButton;
+    private EditText eventTitleEditText;
+    private EditText eventTypeEditText;
+    private EditText descriptionEditText;
+    private EditText locationEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
 
-        eTextData=(EditText) findViewById(R.id.data);
-        eTextData.setInputType(InputType.TYPE_NULL);
-        eTextData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                pickerData = new DatePickerDialog(EventInfoActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                eTextData.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                pickerData.show();
-            }
-        });
 
-        eTextHour=(EditText) findViewById(R.id.hour);
+        eventTitleEditText = findViewById(R.id.event_title);
+        eventTypeEditText = findViewById(R.id.event_type);
+        descriptionEditText = findViewById(R.id.event_descriere);
+        locationEditText = findViewById(R.id.event_location);
+
+        eTextData = (EditText) findViewById(R.id.data);
+        eTextData.setInputType(InputType.TYPE_NULL);
+        eTextData.setOnClickListener(this);
+
+        eTextHour = (EditText) findViewById(R.id.hour);
         eTextHour.setInputType(InputType.TYPE_NULL);
-        eTextHour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar cldr = Calendar.getInstance();
-                int hour = cldr.get(Calendar.HOUR_OF_DAY);
-                int minutes = cldr.get(Calendar.MINUTE);
-                // time picker dialog
-                pickerHour = new TimePickerDialog(EventInfoActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                eTextHour.setText(sHour + ":" + sMinute);
-                            }
-                        }, hour, minutes, true);
-                pickerHour.show();
-            }
-        });
+        eTextHour.setOnClickListener(this);
 
         imageView = (ImageView)findViewById(R.id.imageView);
         button = (Button)findViewById(R.id.buttonLoadPicture);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
+        button.setOnClickListener(this);
+
+        saveButton = findViewById(R.id.event_save_button);
+        saveButton.setOnClickListener(this);
+
     }
     private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -96,4 +78,73 @@ public class EventInfoActivity extends AppCompatActivity {
             imageView.setImageURI(imageUri);
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.data:
+                saveDataPicker();
+                break;
+            case R.id.hour:
+                saveTimePicker();
+                break;
+            case R.id.buttonLoadPicture:
+                openGallery();
+                break;
+            case R.id.event_save_button:
+                saveEvent();
+                break;
+        }
+    }
+
+    public void saveDataPicker() {
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        pickerData = new DatePickerDialog(EventInfoActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        eTextData.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
+                }, year, month, day);
+        pickerData.show();
+    }
+
+    public void saveTimePicker() {
+        final Calendar cldr = Calendar.getInstance();
+        int hour = cldr.get(Calendar.HOUR_OF_DAY);
+        int minutes = cldr.get(Calendar.MINUTE);
+        // time picker dialog
+        pickerHour = new TimePickerDialog(EventInfoActivity.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                        eTextHour.setText(sHour + ":" + sMinute);
+                    }
+                }, hour, minutes, true);
+        pickerHour.show();
+    }
+
+    public void saveEvent() {
+        DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference("Events");
+
+        DatabaseReference newEventRef = eventRef.push();
+
+        String titleEveniment = eventTitleEditText.getText().toString().trim();
+        String tipEveniment = eventTypeEditText.getText().toString().trim();
+        String dataEveniment = eTextData.getText().toString().trim();
+        String oraEveniment = eTextHour.getText().toString().trim();
+        String locatieEveniment = locationEditText.getText().toString().trim();
+        String organizatorEveniment = "Ion";
+        String descriereEveniment = descriptionEditText.getText().toString().trim();
+
+
+        newEventRef.setValue(new Event(titleEveniment,tipEveniment, dataEveniment, oraEveniment,
+                locatieEveniment, organizatorEveniment, descriereEveniment));
+
+    }
+
 }

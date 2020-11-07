@@ -7,7 +7,7 @@
     tools:context=".EventInfoActivity">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/location"
+        android:id="@+id/event_location"
         android:layout_width="332dp"
         android:layout_height="60dp"
         android:layout_marginStart="36dp"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/event_type"/>
 
     <EditText
-        android:id="@+id/et"
+        android:id="@+id/event_descriere"
         android:layout_width="333dp"
         android:layout_height="217dp"
         android:layout_gravity="top"
@@ -74,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="@+id/event_type"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/event_type"
-        app:layout_constraintTop_toBottomOf="@+id/location" />
+        app:layout_constraintTop_toBottomOf="@+id/event_location" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -85,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toEndOf="@+id/buttonLoadPicture"
-        app:layout_constraintTop_toBottomOf="@+id/et" />
+        app:layout_constraintTop_toBottomOf="@+id/event_descriere" />
 
     <Button
         android:id="@+id/buttonLoadPicture"
@@ -97,5 +97,17 @@
         android:layout_weight="0"
         android:text="Alegeti o poza"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et" />
+        app:layout_constraintTop_toBottomOf="@+id/event_descriere" />
+
+    <Button
+        android:id="@+id/event_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salveaza"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoadPicture"
+        app:layout_constraintVertical_bias="0.175" />
 </androidx.constraintlayout.widget.ConstraintLayout>
