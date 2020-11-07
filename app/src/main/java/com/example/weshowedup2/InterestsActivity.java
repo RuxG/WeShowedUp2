@@ -1,5 +1,7 @@
 package com.example.weshowedup2;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +25,12 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
     private Button dans;
     private Button filme;
     private Button teatru;
+    private Button confirma;
+
+    private boolean muzica_pressed;
+    private boolean dans_pressed;
+    private boolean filme_pressed;
+    private boolean teatru_pressed;
 
     private ArrayList<Tags> interests = new ArrayList<>();
     int color = 0xFF8A1515;
@@ -47,7 +55,8 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
         teatru = findViewById(R.id.teatru);
         teatru.setOnClickListener(this);
 
-
+        confirma = findViewById(R.id.confirm_button);
+        confirma.setOnClickListener(this);
         /*FirebaseDatabase.getInstance().getReference("Users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("interests")
                 .setValue();
@@ -60,20 +69,52 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.muzica:
+                if(muzica_pressed) {
+                    muzica.setBackgroundColor(Color.RED);
+
+                } else {
+                    muzica.setBackgroundColor(Color.YELLOW);
+                }
+                muzica_pressed = !muzica_pressed;
                 interests.add(Tags.MUZICA);
                 updateInterests(Tags.MUZICA);
                 break;
             case R.id.dans:
+                if(dans_pressed) {
+                    dans.setBackgroundColor(Color.RED);
+                } else {
+                    dans.setBackgroundColor(Color.YELLOW);
+
+                }
+                dans_pressed = !dans_pressed;
                 interests.add(Tags.DANS);
                 updateInterests(Tags.DANS);
                 break;
             case R.id.filme:
+                if(filme_pressed) {
+                    filme.setBackgroundColor(Color.RED);
+                } else {
+                    filme.setBackgroundColor(Color.YELLOW);
+
+                }
+                filme_pressed = !filme_pressed;
                 interests.add(Tags.FILME);
                 updateInterests(Tags.FILME);
                 break;
             case R.id.teatru:
+                if(teatru_pressed) {
+                    teatru.setBackgroundColor(Color.RED);
+                } else {
+                    teatru.setBackgroundColor(Color.YELLOW);
+
+                }
+                teatru_pressed = !teatru_pressed;
                 interests.add(Tags.TEATRU);
                 updateInterests(Tags.TEATRU);
+                break;
+            case R.id.confirm_button:
+                Intent intent = new Intent(InterestsActivity.this, FeedActivity.class);
+                startActivity(intent);
                 break;
         }
     }

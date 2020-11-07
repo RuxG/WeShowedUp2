@@ -19,17 +19,19 @@
 
     <Button
         android:id="@+id/filme"
-        android:layout_width="99dp"
+        android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="232dp"
-        android:background="@color/teal_700"
-        android:backgroundTint="#52D50606"
+        android:layout_marginEnd="155dp"
+        android:background="#FF0000"
+        android:backgroundTint="#FF0000"
         android:text="filme"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:iconTint="#831515"
+        app:layout_constraintEnd_toStartOf="@+id/arta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rippleColor="#450A0A"
@@ -40,8 +42,9 @@
         android:layout_width="105dp"
         android:layout_height="54dp"
         android:layout_marginStart="36dp"
-        android:text="muzica"
         android:background="@color/purple_200"
+        android:backgroundTint="#FF0000"
+        android:text="muzica"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/teatru"
@@ -53,8 +56,9 @@
         android:layout_height="56dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
-        android:text="teatru"
         android:background="@color/purple_200"
+        android:backgroundTint="#FF0000"
+        android:text="teatru"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/muzica"
@@ -65,10 +69,11 @@
         android:layout_width="95dp"
         android:layout_height="55dp"
         android:layout_marginStart="39dp"
+        android:background="#FF0000"
+        android:backgroundTint="#FF0000"
         android:text="dans"
         android:textAllCaps="false"
         android:textSize="18sp"
-        android:background="@color/purple_200"
         app:layout_constraintBaseline_toBaselineOf="@+id/filme"
         app:layout_constraintStart_toEndOf="@+id/filme" />
 
@@ -76,9 +81,23 @@
         android:id="@+id/arta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="29dp"
+        android:backgroundTint="#FF0000"
         android:text="arta"
         android:textAllCaps="false"
-        tools:layout_editor_absoluteX="292dp"
-        tools:layout_editor_absoluteY="236dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/dans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/filme" />
+
+    <Button
+        android:id="@+id/confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="71dp"
+        android:text="Confirma"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
