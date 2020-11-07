@@ -125,7 +125,7 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
         if (pressed) {
             btn.setBackgroundColor(color);
         } else {
-            btn.setBackgroundColor(Color.BLUE);
+            btn.setBackgroundColor(0xFF3F51B5);
 
         }
     }
