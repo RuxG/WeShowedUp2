@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1010606542792",
+    "firebase_url": "https://weshowedup2.firebaseio.com",
+    "project_id": "weshowedup2",
+    "storage_bucket": "weshowedup2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010606542792:android:0994f79a20779734187afd",
+        "android_client_info": {
+          "package_name": "com.example.weshowedup2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010606542792-ggi45rcoollvgl2clj46ksbqfk1bmg5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCprz1h9V-_KFgUYoh737r3AMYNz1E6EQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010606542792-ggi45rcoollvgl2clj46ksbqfk1bmg5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
