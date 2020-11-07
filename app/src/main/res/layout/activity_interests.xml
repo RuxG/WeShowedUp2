@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InterestsActivity">
+
+    <TextView
+        android:id="@+id/care_sunt_interesele"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="Care sunt interesele tale?"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/filme"
+        android:layout_width="99dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="232dp"
+        android:background="@color/teal_700"
+        android:backgroundTint="#52D50606"
+        android:text="filme"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:iconTint="#831515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="#450A0A"
+        app:strokeColor="#970D0D" />
+
+    <Button
+        android:id="@+id/muzica"
+        android:layout_width="105dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="36dp"
+        android:text="muzica"
+        android:background="@color/purple_200"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/teatru"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/teatru"
+        android:layout_width="104dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:text="teatru"
+        android:background="@color/purple_200"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/muzica"
+        app:layout_constraintTop_toBottomOf="@+id/dans" />
+
+    <Button
+        android:id="@+id/dans"
+        android:layout_width="95dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="39dp"
+        android:text="dans"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:background="@color/purple_200"
+        app:layout_constraintBaseline_toBaselineOf="@+id/filme"
+        app:layout_constraintStart_toEndOf="@+id/filme" />
+
+    <Button
+        android:id="@+id/arta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="arta"
+        android:textAllCaps="false"
+        tools:layout_editor_absoluteX="292dp"
+        tools:layout_editor_absoluteY="236dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
