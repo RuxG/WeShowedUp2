@@ -4,5 +4,7 @@ public enum Tags {
     MUZICA,
     FILME,
     TEATRU,
-    DANS
+    DANS,
+    MUZEE,
+    ARTA
 }

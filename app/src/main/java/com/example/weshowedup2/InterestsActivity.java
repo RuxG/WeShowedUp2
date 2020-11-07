@@ -25,15 +25,19 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
     private Button dans;
     private Button filme;
     private Button teatru;
+    private Button arta;
+    private Button muzee;
     private Button confirma;
 
     private boolean muzica_pressed;
     private boolean dans_pressed;
     private boolean filme_pressed;
     private boolean teatru_pressed;
+    private boolean arta_pressed;
+    private boolean muzee_pressed;
 
     private ArrayList<Tags> interests = new ArrayList<>();
-    int color = 0xFF8A1515;
+    int color = 0x91B8F3;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("interests");
 
@@ -55,6 +59,12 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
         teatru = findViewById(R.id.teatru);
         teatru.setOnClickListener(this);
 
+        arta = findViewById(R.id.arta);
+        arta.setOnClickListener(this);
+
+        muzee = findViewById(R.id.muzee);
+        muzee.setOnClickListener(this);
+
         confirma = findViewById(R.id.confirm_button);
         confirma.setOnClickListener(this);
         /*FirebaseDatabase.getInstance().getReference("Users")
@@ -69,53 +79,54 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.muzica:
-                if(muzica_pressed) {
-                    muzica.setBackgroundColor(Color.RED);
-
-                } else {
-                    muzica.setBackgroundColor(Color.YELLOW);
-                }
+                updateColor(muzica_pressed, muzica);
                 muzica_pressed = !muzica_pressed;
                 interests.add(Tags.MUZICA);
                 updateInterests(Tags.MUZICA);
                 break;
             case R.id.dans:
-                if(dans_pressed) {
-                    dans.setBackgroundColor(Color.RED);
-                } else {
-                    dans.setBackgroundColor(Color.YELLOW);
-
-                }
+                updateColor(dans_pressed, dans);
                 dans_pressed = !dans_pressed;
                 interests.add(Tags.DANS);
                 updateInterests(Tags.DANS);
                 break;
             case R.id.filme:
-                if(filme_pressed) {
-                    filme.setBackgroundColor(Color.RED);
-                } else {
-                    filme.setBackgroundColor(Color.YELLOW);
-
-                }
+                updateColor(filme_pressed, filme);
                 filme_pressed = !filme_pressed;
                 interests.add(Tags.FILME);
                 updateInterests(Tags.FILME);
                 break;
             case R.id.teatru:
-                if(teatru_pressed) {
-                    teatru.setBackgroundColor(Color.RED);
-                } else {
-                    teatru.setBackgroundColor(Color.YELLOW);
-
-                }
+                updateColor(teatru_pressed, teatru);
                 teatru_pressed = !teatru_pressed;
                 interests.add(Tags.TEATRU);
                 updateInterests(Tags.TEATRU);
                 break;
+            case R.id.arta:
+                updateColor(arta_pressed, arta);
+                arta_pressed = !arta_pressed;
+                interests.add(Tags.ARTA);
+                updateInterests(Tags.ARTA);
+                break;
+            case R.id.muzee:
+                updateColor(muzee_pressed, muzee);
+                muzee_pressed = !muzee_pressed;
+                interests.add(Tags.MUZEE);
+                updateInterests(Tags.MUZEE);
+                break;
             case R.id.confirm_button:
-                Intent intent = new Intent(InterestsActivity.this, FeedActivity.class);
+                Intent intent = new Intent(InterestsActivity.this, RecommendedEvents.class);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    private void updateColor(boolean pressed, Button btn) {
+        if (pressed) {
+            btn.setBackgroundColor(color);
+        } else {
+            btn.setBackgroundColor(Color.BLUE);
+
         }
     }
 
@@ -123,6 +134,6 @@ public class InterestsActivity extends AppCompatActivity implements View.OnClick
         FirebaseDatabase.getInstance().getReference("Users").
                 child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("interese").child(tag.toString()).setValue("true");
-        //System.out.println(E);
     }
+
 }
