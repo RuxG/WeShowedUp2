@@ -1,5 +1,6 @@
 package com.example.weshowedup2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,10 +22,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class EventInfoActivity extends AppCompatActivity implements View.OnClickListener {
     private DatePickerDialog pickerData;
@@ -129,9 +135,9 @@ public class EventInfoActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void saveEvent() {
-        DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference("Events");
+        DatabaseReference referinta = FirebaseDatabase.getInstance().getReference("Events");
 
-        DatabaseReference newEventRef = eventRef.push();
+        DatabaseReference newEventRef = referinta.push();
 
         String titleEveniment = eventTitleEditText.getText().toString().trim();
         String tipEveniment = eventTypeEditText.getText().toString().trim();
@@ -145,6 +151,27 @@ public class EventInfoActivity extends AppCompatActivity implements View.OnClick
         newEventRef.setValue(new Event(titleEveniment,tipEveniment, dataEveniment, oraEveniment,
                 locatieEveniment, organizatorEveniment, descriereEveniment));
 
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot uniqueUserSnapshot : snapshot.getChildren()) {
+                    if (uniqueUserSnapshot.child("interese").child(tipEveniment).getValue() != null){
+                        String key = uniqueUserSnapshot.getKey();
+                        usersRef.child(key).child("evenimente_recomandate").child(newEventRef.getKey())
+                        .setValue("true");
+                        Toast.makeText(EventInfoActivity.this, "bravo boss mare fan", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }

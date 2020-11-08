@@ -1,7 +1,9 @@
 package com.example.weshowedup2;
 
+import android.app.SyncNotedAppOp;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,12 +17,23 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.List;
 
 
 public class RecommendedEvents extends AppCompatActivity implements View.OnClickListener {
     RecyclerView mRecyclerView;
-    MyAdapter myAdapter;
+     MyAdapter myAdapter;
+    ArrayList<Model> models = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +52,20 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //getMyList();
+        //Toast.makeText(RecommendedEvents.this, "SIZEEEE BA !"+ models.size(), Toast.LENGTH_LONG).show();
+        //Log.e("VAL", "SIZEEEEEE BA" + models.size());
 
-        myAdapter = new MyAdapter(this, getMyList());
+        readData(new MyCallback() {
+            @Override
+            public void onCallback(ArrayList<Model> models) {
+                //Log.d("TAG", mo);
+                myAdapter = new MyAdapter(RecommendedEvents.this, models);
+                mRecyclerView.setAdapter(myAdapter);
+            }
+        });
 
-        mRecyclerView.setAdapter(myAdapter);
+
     }
 
     @Override
@@ -59,6 +82,7 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.settings:
+                startActivity(new Intent(RecommendedEvents.this, ProfileActivity.class));
                 Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.appbar:
@@ -74,42 +98,79 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
         startActivity(new Intent(RecommendedEvents.this, EventInfoActivity.class));
     }
 
-    private ArrayList<Model> getMyList() {
-        ArrayList<Model> models = new ArrayList<>();
+    private void getMyList() {
 
-        Model m = new Model();
-        m.setTitle("Secretul lui Florin");
-        m.setData("21/10.2020");
-        m.setLocation("Acasa la Maria");
-        m.setOrganiser("Florin insusi");
-        m.setImg(R.drawable.ic_logout);
-        models.add(m);
 
-        Model m2 = new Model();
-        m2.setTitle("Burcalul Scarlatescu");
-        m2.setData("22/10.2020");
-        m2.setLocation("Acasa la Diana");
-        m2.setOrganiser("Sefu Scarlatescu");
-        m2.setImg(R.drawable.ic_logout);
-        models.add(m2);
+    }
 
-        Model m3 = new Model();
-        m3.setTitle("Secretul ratelor");
-        m3.setData("23/10.2020");
-        m3.setLocation("Acasa la Ruxi");
-        m3.setOrganiser("Ruxi");
-        m3.setImg(R.drawable.ic_logout);
-        models.add(m3);
 
-        Model m4 = new Model();
-        m4.setTitle("Ratonii se intorc");
-        m4.setData("25/10.2020");
-        m4.setLocation("Unde vreti voi");
-        m4.setOrganiser("Ruxi");
-        m4.setImg(R.drawable.ic_logout);
-        models.add(m4);
+    public interface MyCallback {
+        void onCallback(ArrayList<Model> models);
+    }
 
-        return models;
+    public void readData(MyCallback myCallback) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("evenimente_recomandate");
 
+
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot uniqueUserSnapshot : snapshot.getChildren()) {
+                    //setRecomendedItem(uniqueUserSnapshot.getKey());
+
+                    DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("Events")
+                            .child(uniqueUserSnapshot.getKey());
+
+                    eventsRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot != null){
+                                Log.e("val", "curiozitate");
+                                String title = snapshot.child("titlu").getValue().toString();
+                                String data = snapshot.child("data").getValue().toString();
+                                String location = snapshot.child("locatie").getValue().toString();
+                                String organiser = snapshot.child("organizator").getValue().toString();
+                                Log.e("val", "title is " + title);
+
+                                Model m = new Model(title, data, location, organiser);
+                                m.setImg(R.drawable.ic_logout);
+
+                                Log.e("val", "model is " + m.getTitle());
+
+                                models.add(m);
+                                myCallback.onCallback(models);
+
+
+                                Log.e("val", "mama ta de model size xxl " + models.size());
+                                //models.clear();
+                            }
+
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
+               // myAdapter = new MyAdapter(RecommendedEvents.this, models);
+
+                //mRecyclerView.setAdapter(myAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Val", error.getMessage());
+            }
+
+
+        });
+
+        Log.e("VAL", "Models size" + models.size());
     }
 }

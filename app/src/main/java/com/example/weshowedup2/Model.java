@@ -1,8 +1,16 @@
 package com.example.weshowedup2;
 
 public class Model {
+
     private String title, data, location, organiser;
     private int img;
+
+    public Model(String title, String data, String location, String organiser) {
+        this.title = title;
+        this.data = data;
+        this.location = location;
+        this.organiser = organiser;
+    }
 
     public String getTitle() {
         return title;

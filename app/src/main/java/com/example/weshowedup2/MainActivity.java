@@ -51,13 +51,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
         String checkBox = preferences.getString("remember", "");
-        /*if (checkBox.equals("true")) {
+        if (checkBox.equals("true")) {
             startActivity(new Intent(MainActivity.this, RecommendedEvents.class));
         } else if (checkBox.equals("false")) {
             Toast.makeText(this, "Please Sign In", Toast.LENGTH_SHORT).show();
         }
-
-         */
 
         rememberMeCheckBox = findViewById(R.id.rememberMe_checkBox);
         rememberMeCheckBox.setOnCheckedChangeListener(this);
