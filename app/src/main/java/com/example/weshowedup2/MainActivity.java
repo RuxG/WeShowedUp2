@@ -20,7 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressBar progressBar;
 
     private CheckBox rememberMeCheckBox;
+
+    private boolean first_login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,18 +124,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (task.isSuccessful()) {
                             User user = new User(email, password);
 
+
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+
+                                        first_login = true;
                                         Toast.makeText(MainActivity.this, "Register succes!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
+
+                                        FirebaseDatabase.getInstance().getReference("Users")
+                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("first_login").setValue("true");
+
                                     }
                                     else {
                                         Toast.makeText(MainActivity.this, "Failed register", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
+                                        first_login = false;
                                     }
                                 }
                             });
@@ -178,10 +192,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+                    DatabaseReference login = FirebaseDatabase.getInstance().getReference("Users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("first_login");
+
+                    login.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot != null) {
+                               // if(snapshot.getValue().toString().compareTo("true") == 0) {
+                                if(first_login) {
+                                    login.setValue("false");
+                                    progressBar.setVisibility(View.GONE);
+                                    startActivity(new Intent(MainActivity.this, InterestsActivity.class));
+                                } else {
+                                   // first_login = false;
+                                    progressBar.setVisibility(View.GONE);
+                                    startActivity(new Intent(MainActivity.this, RecommendedEvents.class));
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                     //if (user.isEmailVerified()) {
                         // redirect to user preferences
-                        startActivity(new Intent(MainActivity.this, InterestsActivity.class));
-                        progressBar.setVisibility(View.GONE);
+
+
                    // } else {
                   //      user.sendEmailVerification();
                      //   Toast.makeText(MainActivity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();

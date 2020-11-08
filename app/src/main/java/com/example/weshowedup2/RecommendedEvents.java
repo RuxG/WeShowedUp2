@@ -52,10 +52,16 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //getMyList();
-        //Toast.makeText(RecommendedEvents.this, "SIZEEEE BA !"+ models.size(), Toast.LENGTH_LONG).show();
-        //Log.e("VAL", "SIZEEEEEE BA" + models.size());
 
+        // if it is the first log in, add events corresponding to tags
+        Bundle b = getIntent().getExtras();
+        boolean value = false; // or other values
+        if(b != null) {
+            value = b.getBoolean("first_login");
+
+            // interese intiale
+            ArrayList<String> interese_initiale = b.getStringArrayList("interese_intiale");
+        }
         readData(new MyCallback() {
             @Override
             public void onCallback(ArrayList<Model> models) {
@@ -81,12 +87,13 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
             case R.id.search:
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.settings:
+            case R.id.event_profile:
                 startActivity(new Intent(RecommendedEvents.this, ProfileActivity.class));
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.appbar:
-                Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
+            case R.id.create_event:
+                startActivity(new Intent(RecommendedEvents.this, EventInfoActivity.class));
+                //Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
                 return true;
 
         }
@@ -119,7 +126,6 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot uniqueUserSnapshot : snapshot.getChildren()) {
-                    //setRecomendedItem(uniqueUserSnapshot.getKey());
 
                     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("Events")
                             .child(uniqueUserSnapshot.getKey());
@@ -133,19 +139,21 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
                                 String data = snapshot.child("data").getValue().toString();
                                 String location = snapshot.child("locatie").getValue().toString();
                                 String organiser = snapshot.child("organizator").getValue().toString();
-                                Log.e("val", "title is " + title);
 
-                                Model m = new Model(title, data, location, organiser);
-                                m.setImg(R.drawable.ic_logout);
+                                int pic;
+                                if(snapshot.child("img").getValue() == null) {
+                                    pic  = R.drawable.ic_logout;
+                                } else {
+                                    pic  = Integer.parseInt(snapshot.child("img").getValue().toString());
+                                }
 
-                                Log.e("val", "model is " + m.getTitle());
+
+                                Model m = new Model(title, data, location, organiser, pic);
+                                m.setImg(pic);
 
                                 models.add(m);
                                 myCallback.onCallback(models);
 
-
-                                Log.e("val", "mama ta de model size xxl " + models.size());
-                                //models.clear();
                             }
 
                         }
@@ -158,9 +166,6 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
                     });
 
                 }
-               // myAdapter = new MyAdapter(RecommendedEvents.this, models);
-
-                //mRecyclerView.setAdapter(myAdapter);
             }
 
             @Override
@@ -171,6 +176,5 @@ public class RecommendedEvents extends AppCompatActivity implements View.OnClick
 
         });
 
-        Log.e("VAL", "Models size" + models.size());
     }
 }

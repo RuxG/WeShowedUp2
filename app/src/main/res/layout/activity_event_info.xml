@@ -7,6 +7,7 @@
     tools:context=".EventInfoActivity">
 
     <com.google.android.material.textfield.TextInputEditText
+
         android:id="@+id/event_location"
         android:layout_width="332dp"
         android:layout_height="60dp"
@@ -19,6 +20,8 @@
         android:inputType="text"/>
 
     <com.google.android.material.textfield.TextInputEditText
+        android:imeOptions="actionDone"
+        android:inputType="text"
         android:id="@+id/event_type"
         android:layout_width="332dp"
         android:layout_height="60dp"
@@ -49,7 +52,10 @@
         android:layout_marginBottom="60dp"
         android:hint="Titlu"
         app:layout_constraintBottom_toTopOf="@+id/data"
+        android:imeOptions="actionDone"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="@+id/data"/>
+
 
     <EditText
         android:id="@+id/hour"
@@ -69,6 +75,8 @@
         android:background="@drawable/rectangle_shape"
         android:gravity="start"
         android:hint="Descriere eveniment"
+        android:imeOptions="actionDone"
+        android:inputType="text"
         android:padding="5dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/event_type"
@@ -80,10 +88,10 @@
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.622"
         app:layout_constraintStart_toEndOf="@+id/buttonLoadPicture"
         app:layout_constraintTop_toBottomOf="@+id/event_descriere" />
 
@@ -106,8 +114,8 @@
         android:text="Salveaza"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLoadPicture"
-        app:layout_constraintVertical_bias="0.175" />
+        app:layout_constraintVertical_bias="0.195" />
 </androidx.constraintlayout.widget.ConstraintLayout>

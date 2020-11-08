@@ -147,9 +147,11 @@ public class EventInfoActivity extends AppCompatActivity implements View.OnClick
         String organizatorEveniment = "Ion";
         String descriereEveniment = descriptionEditText.getText().toString().trim();
 
+        String pic = String.valueOf(this.getResources().getIdentifier("ic_logout", "drawable", this.getPackageName()));
+
 
         newEventRef.setValue(new Event(titleEveniment,tipEveniment, dataEveniment, oraEveniment,
-                locatieEveniment, organizatorEveniment, descriereEveniment));
+                locatieEveniment, organizatorEveniment, descriereEveniment, pic));
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -161,7 +163,6 @@ public class EventInfoActivity extends AppCompatActivity implements View.OnClick
                         String key = uniqueUserSnapshot.getKey();
                         usersRef.child(key).child("evenimente_recomandate").child(newEventRef.getKey())
                         .setValue("true");
-                        Toast.makeText(EventInfoActivity.this, "bravo boss mare fan", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }

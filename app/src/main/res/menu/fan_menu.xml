@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <group android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/logout_menu"
-            android:title="Logout"
-            android:icon="@drawable/ic_logout">
-        </item>
+    <item
+        android:title="Logout"
+        android:id="@+id/logout_menu"
+        android:icon="@drawable/ic_logout"
+        app:showAsAction="never">
+    </item>
 
-    </group>
+    <item
+        android:title="Share"
+        android:id="@+id/share"
+        app:showAsAction="never"/>
 
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/share"
-            android:title="Share"/>
+    <item
+        android:title="About"
+        android:id="@+id/about"
+        app:showAsAction="never"/>
 
-        <item android:id="@+id/about"
-            android:title="About"/>
+    <item
+        android:id="@+id/exit"
+        android:title="Exit"
+        app:showAsAction="never"></item>
 
-        <item
-            android:title="Exit"
-            android:id="@+id/exit"></item>
+    <item android:id="@+id/search"
+        android:title="Search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always"/>
 
-        <item android:id="@+id/search"
-            android:title="Search"
-            android:icon="@drawable/ic_search"
-            app:showAsAction="always"/>
-
-        <item
-            android:title="Settings"
-            android:id="@+id/settings"
-            android:icon="@drawable/ic_filter"
-            app:showAsAction="always"></item>
-    </group>
-
-
+    <item
+        android:title="Profile"
+        android:id="@+id/event_profile"
+        android:icon="@drawable/ic_profile"
+        app:showAsAction="always"></item>
+    <item
+        android:title="Create Event"
+        android:id="@+id/create_event"
+        android:icon="@drawable/ic_add_event"
+        app:showAsAction="always"></item>
 
 
 </menu>

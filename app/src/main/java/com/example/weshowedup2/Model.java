@@ -5,11 +5,12 @@ public class Model {
     private String title, data, location, organiser;
     private int img;
 
-    public Model(String title, String data, String location, String organiser) {
+    public Model(String title, String data, String location, String organiser, int img) {
         this.title = title;
         this.data = data;
         this.location = location;
         this.organiser = organiser;
+        this.img = img;
     }
 
     public String getTitle() {
